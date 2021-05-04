@@ -19,10 +19,29 @@ exports.handler = async function(event) {
   console.log(moviesFromCsv)
 
   // 🔥 hw6: your recipe and code starts here!
+  let year = event.queryStringParameters.year
+  let genre = event.queryStringParameters.genre
   
-  // a lambda function returns a status code and a string of data
-  return {
-    statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-    body: `Hello from the back-end!` // a string of data
+  if (year == undefined || genre == undefined) {
+    return {
+      statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+      body: `Nope!` // a string of data
+    }
+  }
+  else {
+    let returnValue = {
+      numResults: 0,
+      movies: []
+    }
+
+    for (let i=0; i < moviesFromCsv.length; i++) {
+
+    }
+
+    // a lambda function returns a status code and a string of data
+    return {
+      statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+      body: `Hello from the back-end!` // a string of data
+    }
   }
 }
