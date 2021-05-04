@@ -19,10 +19,7 @@ exports.handler = async function(event) {
   console.log(moviesFromCsv)
 
   // 🔥 hw6: your recipe and code starts here!
-  let year = event.queryStringParameters.year
-  let genre = event.queryStringParameters.genre
   
-
   // a lambda function returns a status code and a string of data
   return {
     statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
