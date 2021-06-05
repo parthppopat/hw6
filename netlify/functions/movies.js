@@ -19,29 +19,54 @@ exports.handler = async function(event) {
   console.log(moviesFromCsv)
 
   // 🔥 hw6: your recipe and code starts here!
-  let year = event.queryStringParameters.year
-  let genre = event.queryStringParameters.genre
-  
-  if (year == undefined || genre == undefined) {
-    return {
-      statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-      body: `Nope!` // a string of data
-    }
+// EXtract year and genre details from querystring parameters
+let year = event.queryStringParameters.year
+let genre = event.queryStringParameters.genre
+
+// Check whether yrar or genre are undefined; if so, return a warning message 
+if (year == undefined || genre == undefined) {
+  return {
+    statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    body: `Year and genre are not defined in your data` // a string of data
   }
-  else {
-    let returnValue = {
-      numResults: 0,
-      movies: []
-    }
+}
 
-    for (let i=0; i < moviesFromCsv.length; i++) {
+// If yera and genre data is available, proceed to create output i.e. list of movies 
+else {
 
-    }
-
-    // a lambda function returns a status code and a string of data
-    return {
-      statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-      body: `Hello from the back-end!` // a string of data
-    }
+// Generate object returnValue to store the movie count and the array of movies
+  let returnValue = {
+    numResults: 0,
+    movies: []
   }
+
+// Run a loop through movie listings to extract details
+  for (let i=0; i < moviesFromCsv.length; i++) {
+
+// Store each listing in memory
+    let movieList = moviesFromCsv[i]
+    
+// Create a new movieDetails object containing the required fields    
+    let movieDetails = {
+      Movie_Title: movieList.primaryTitle,
+      Movie_Release_Year: movieList.startYear,
+      Movie_Genre: movieList.genres
+    }
+
+// Condition to include a movie in the output list only if it meets the criteria input by the user + condition to exclude movies with //N runtime and genres
+    if(movieList.genres.includes(genre) && movieList.startYear == year && movieList.runtimeMinutes !== `\\N` && movieList.genres !== `\\N`){
+    
+// Add the filtered results to the movie list i.e. array    
+    returnValue.movies.push(movieDetails)
+    
+// Add +1 to the movie list counter    
+    returnValue.numResults=returnValue.numResults+1  
+  }
+}
+  // a lambda function returns a status code and a string of data
+return {
+  statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+  body: JSON.stringify(returnValue) // a string of data
+}
+}
 }
